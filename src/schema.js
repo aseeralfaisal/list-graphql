@@ -1,14 +1,15 @@
-const { gql } = require('apollo-server')
+const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
 type Todo {
-  userId: Int!,
-  id: Int!,
-  title: String!
-  completed: Boolean!
+  userId: Int
+  id: Int
+  title: String
+  completed: Boolean
 }
 type Query {
-    todos: [Todo!]
+  test: String
+  todos: [Todo]
 }`
 
-module.exports = typeDefs;
+module.exports = typeDefs
