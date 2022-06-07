@@ -1,4 +1,7 @@
-const { ApolloServer } = require('apollo-server')
+const { ApolloServer } = require('apollo-server-express')
+const { ApolloServerPluginDrainHttpServer } = require('apollo-server-core')
+const express = require('express')
+const http = require('http')
 const typeDefs = require('./schema')
 const axios = require('axios')
 const uri = 'https://jsonplaceholder.typicode.com/todos'
@@ -20,12 +23,24 @@ const resolvers = {
     title(parent) {
       return parent.title
     },
-    completed(parent){
+    completed(parent) {
       return parent.completed
     }
   }
 };
 
-const server = new ApolloServer({ typeDefs, resolvers })
-const listener = server.listen()
-listener.then(({ url }) => console.log(`👌 Server ready at ${url}`))
+async function startApolloServer() {
+  const app = express();
+  const httpServer = http.createServer(app);
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    csrfPrevention: true,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
+  await server.start();
+  server.applyMiddleware({ app });
+  await new Promise(resolve => httpServer.listen({ port: 4000 }, resolve));
+  console.log(`👌 Server ready at http://localhost:4000${server.graphqlPath}`);
+}
+startApolloServer()
