@@ -2,14 +2,17 @@ const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
 type Todo {
-  userId: Int
-  id: Int
-  title: String
-  completed: Boolean
+  _id: String!
+  title: String!
+}
+type Mutation {
+  addTodo(title: String): Todo!
+  deleteTodo(title: String): [Todo!]
 }
 type Query {
-  test: String
-  todos: [Todo]
-}`
+  test: String!
+  todos: [Todo!]
+}
+`
 
 module.exports = typeDefs

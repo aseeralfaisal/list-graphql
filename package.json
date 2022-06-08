@@ -12,7 +12,8 @@
     "apollo-server-express": "^3.8.2",
     "axios": "^0.27.2",
     "express": "^4.18.1",
-    "graphql": "^15.8.0"
+    "graphql": "^15.8.0",
+    "mongodb": "^4.7.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",

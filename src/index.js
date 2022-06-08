@@ -5,6 +5,7 @@ const http = require('http')
 const resolvers = require('./resolvers')
 const typeDefs = require('./schema')
 
+
 async function startApolloServer() {
   const app = express();
   const httpServer = http.createServer(app);

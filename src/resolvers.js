@@ -1,26 +1,29 @@
-const axios = require('axios')
-const uri = 'https://jsonplaceholder.typicode.com/todos'
+const { collection, client } = require('./mongo')
 
 const resolvers = {
     Query: {
         test: () => "Hello word",
         todos: async () => {
-            const res = await axios.get(uri)
-            return [...res.data]
+            return await collection.find().toArray()
         },
     },
     Todo: {
-        userId(parent) {
-            return todos.filter(todo => todo.userId = parent.userId)
-        },
-        id(parent) {
-            return parent.id
+        _id(parent) {
+            return parent._id
         },
         title(parent) {
             return parent.title
         },
-        completed(parent) {
-            return parent.completed
+    },
+    Mutation: {
+        async addTodo(_, { title }) {
+            await collection.insertOne({ title })
+            const inserted = await collection.findOne({ title })
+            return inserted
+        },
+        async deleteTodo(parent, { title }) {
+            const deleted = await collection.deleteOne({ title })
+            return await collection.find().toArray()
         }
     },
 }
