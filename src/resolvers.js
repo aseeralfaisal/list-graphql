@@ -22,7 +22,7 @@ const resolvers = {
             return inserted
         },
         async deleteTodo(parent, { title }) {
-            const deleted = await collection.deleteOne({ title })
+            await collection.deleteOne({ title })
             return await collection.find().toArray()
         }
     },
